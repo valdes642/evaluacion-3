@@ -55,7 +55,8 @@ h1, h2, h3 {
 
 .hidden { display: none !important; }
 
-input, select, textarea { 
+/* Estilo base para los inputs normales y textareas */
+input, textarea { 
     display: block; 
     width: 100%; 
     box-sizing: border-box;
@@ -69,9 +70,36 @@ input, select, textarea {
     transition: box-shadow 0.3s;
 }
 
+/* --- NUEVO: ESTILO UNIFICADO PARA LAS CAJAS DESPLEGABLES --- */
+select {
+    display: block; 
+    width: 100%; 
+    box-sizing: border-box;
+    margin-bottom: 15px; 
+    padding: 12px; 
+    /* Fondo azul translúcido con borde neón para que combinen entre sí */
+    background-color: rgba(0, 242, 254, 0.05);
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: box-shadow 0.3s, background-color 0.3s;
+}
+
+/* Color de las opciones al abrir la caja */
+select option {
+    background-color: var(--panel-bg);
+    color: var(--text-main);
+    font-weight: normal;
+}
+/* ----------------------------------------------------------- */
+
 input:focus, select:focus, textarea:focus {
     outline: none;
     box-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
+    background-color: rgba(0, 242, 254, 0.1);
 }
 
 textarea { resize: vertical; min-height: 80px; }

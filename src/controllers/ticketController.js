@@ -8,12 +8,16 @@ const crearTicket = async (req, res) => {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
         const prioridad = calcularPrioridad(impacto, urgencia, categoria, tiempoEstimado);
+        
         const [result] = await db.query(
             'INSERT INTO tickets (nombreSolicitante, correo, categoria, descripcion, impacto, urgencia, tiempoEstimado, prioridad) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
             [nombreSolicitante, correo, categoria, descripcion, impacto, urgencia, tiempoEstimado, prioridad]
         );
         res.status(201).json({ mensaje: 'Ticket creado', id: result.insertId, prioridad });
-    } catch (error) { res.status(500).json({ error: 'Error interno' }); }
+    } catch (error) { 
+        console.error(error);
+        res.status(500).json({ error: 'Error interno' }); 
+    }
 };
 
 const listarTickets = async (req, res) => {
