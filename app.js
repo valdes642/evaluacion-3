@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-// Agregar 'src/' a las rutas
 const authRoutes = require('./src/routes/auth'); 
 const ticketRoutes = require('./src/routes/tickets');
 
