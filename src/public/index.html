@@ -2,12 +2,16 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>HelpDesk Smart Priority</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HelpDesk Smart Priority - GhostDev</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>HelpDesk Smart Priority</h1>
+        <div class="logo-container">
+            <img src="GhostDev - Logo.png" alt="GhostDev Logo" class="logo">
+            <h1>HelpDesk Smart Priority</h1>
+        </div>
         <button id="btnLogout" style="display:none;" onclick="logout()">Cerrar Sesión</button>
     </header>
 
@@ -27,6 +31,7 @@
                 <input type="text" id="nombreSolicitante" placeholder="Nombre Solicitante" required>
                 <input type="email" id="correo" placeholder="Correo electrónico" required>
                 <select id="categoria" required>
+                    <option value="" disabled selected>Categoría</option>
                     <option value="hardware">Hardware</option>
                     <option value="software">Software</option>
                     <option value="red">Red</option>

@@ -1,3 +1,5 @@
+/* script.js */
+
 const API_URL = 'http://localhost:3000';
 
 // Verificar login al cargar
@@ -91,13 +93,17 @@ async function cargarTickets() {
         container.innerHTML = '';
 
         tickets.forEach(ticket => {
+            const fecha = new Date(ticket.fechaCreacion).toLocaleString('es-ES');
             container.innerHTML += `
                 <div class="ticket-card prioridad-${ticket.prioridad}">
-                    <h3>${ticket.descripcion} - <small>${ticket.categoria}</small></h3>
+                    <h3>${ticket.descripcion} - <small>${ticket.categoria.toUpperCase()}</small></h3>
                     <p><strong>Solicitante:</strong> ${ticket.nombreSolicitante} (${ticket.correo})</p>
-                    <p><strong>Estado:</strong> ${ticket.estado} | <strong>Prioridad calculada:</strong> ${ticket.prioridad}</p>
-                    <button class="btn-update" onclick="actualizarEstado('${ticket.id}')">Marcar Resuelto</button>
-                    <button class="btn-delete" onclick="eliminarTicket('${ticket.id}')">Eliminar</button>
+                    <p><strong>Estado:</strong> ${ticket.estado} | <strong>Prioridad:</strong> ${ticket.prioridad}</p>
+                    <p><small>Creado: ${fecha}</small></p>
+                    <div class="card-actions">
+                        <button class="btn-update" onclick="actualizarEstado('${ticket.id}')">Marcar Resuelto</button>
+                        <button class="btn-delete" onclick="eliminarTicket('${ticket.id}')">Eliminar</button>
+                    </div>
                 </div>
             `;
         });
@@ -109,6 +115,16 @@ async function cargarTickets() {
 // ACTUALIZAR TICKET
 async function actualizarEstado(id) {
     const token = localStorage.getItem('token');
+    const ticket = await fetch(`${API_URL}/tickets/${id}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+    });
+    const ticketData = await ticket.json();
+
+    if(ticketData.estado === 'resuelto') {
+        alert('Este ticket ya está resuelto.');
+        return;
+    }
+
     await fetch(`${API_URL}/tickets/${id}`, {
         method: 'PUT',
         headers: { 
