@@ -1,13 +1,14 @@
-// app.js
 const express = require('express');
 const cors = require('cors');
-const authRoutes = require('./routes/auth');
-const ticketRoutes = require('./routes/tickets');
+// Agregar 'src/' a las rutas
+const authRoutes = require('./src/routes/auth'); 
+const ticketRoutes = require('./src/routes/tickets');
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static('public')); // Sirve el frontend
+// Cambiar public por src/public
+app.use(express.static('src/public')); 
 
 // Rutas
 app.use('/login', authRoutes);
