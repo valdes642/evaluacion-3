@@ -1,0 +1,26 @@
+body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f9; }
+
+header { text-align: center; color: #333; }
+
+#form-section, #list-section { 
+    background: white; 
+    padding: 20px; 
+    margin-bottom: 20px; 
+    border-radius: 8px; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+}
+
+form { display: flex; flex-direction: column; gap: 10px; }
+
+.ticket-card { 
+    border: 1px solid #ddd; 
+    padding: 10px; 
+    margin: 10px 0; 
+    border-left: 5px solid #007bff; 
+}
+
+/* Clases para visualizar la prioridad */
+.prioridad-baja { border-left-color: green; }
+.prioridad-media { border-left-color: orange; }
+.prioridad-alta { border-left-color: red; }
+.prioridad-critica { border-left-color: darkred; font-weight: bold; }

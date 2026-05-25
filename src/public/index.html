@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="style.css">
+    <title>HelpDesk Smart Priority</title>
+</head>
+<body>
+    <header>
+        <h1>HelpDesk Smart Priority</h1>
+    </header>
+
+    <main>
+        <section id="form-section">
+            <h2>Registrar Nuevo Ticket</h2>
+            <form id="ticketForm">
+                <input type="text" id="nombre" placeholder="Nombre Solicitante" required>
+                <input type="email" id="correo" placeholder="Correo electrónico" required>
+                <select id="categoria">
+                    <option value="hardware">Hardware</option>
+                    <option value="software">Software</option>
+                    <option value="red">Red</option>
+                    <option value="cuenta">Cuenta</option>
+                </select>
+                <textarea id="descripcion" placeholder="Descripción del problema" required></textarea>
+                <button type="submit">Enviar Ticket</button>
+            </form>
+        </section>
+
+        <select id="impacto" required>
+                    <option value="" disabled selected>Nivel de Impacto</option>
+                    <option value="1">Bajo</option>
+                    <option value="2">Medio</option>
+                    <option value="3">Alto</option>
+                </select>
+                <select id="urgencia" required>
+                    <option value="" disabled selected>Nivel de Urgencia</option>
+                    <option value="1">Baja</option>
+                    <option value="2">Media</option>
+                    <option value="3">Alta</option>
+                </select>
+                <input type="number" id="tiempoEstimado" placeholder="Tiempo estimado (horas)" required>
+                <button type="submit">Enviar Ticket</button>
+            </form>
+        </section>
+
+        <section id="list-section">
+            <h2>Listado de Tickets</h2>
+            <div id="ticketsContainer"></div>
+        </section>
+    </main>
+    <script src="script.js"></script> 
+</body>
+</html>
