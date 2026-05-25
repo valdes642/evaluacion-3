@@ -1,53 +1,64 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
     <title>HelpDesk Smart Priority</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
         <h1>HelpDesk Smart Priority</h1>
+        <button id="btnLogout" style="display:none;" onclick="logout()">Cerrar Sesión</button>
     </header>
 
     <main>
-        <section id="form-section">
+        <section id="login-section">
+            <h2>Iniciar Sesión</h2>
+            <form id="loginForm">
+                <input type="text" id="username" placeholder="Usuario (admin)" required>
+                <input type="password" id="password" placeholder="Contraseña (1234)" required>
+                <button type="submit">Ingresar</button>
+            </form>
+        </section>
+
+        <section id="form-section" style="display:none;">
             <h2>Registrar Nuevo Ticket</h2>
             <form id="ticketForm">
-                <input type="text" id="nombre" placeholder="Nombre Solicitante" required>
+                <input type="text" id="nombreSolicitante" placeholder="Nombre Solicitante" required>
                 <input type="email" id="correo" placeholder="Correo electrónico" required>
-                <select id="categoria">
+                <select id="categoria" required>
                     <option value="hardware">Hardware</option>
                     <option value="software">Software</option>
                     <option value="red">Red</option>
                     <option value="cuenta">Cuenta</option>
+                    <option value="otro">Otro</option>
                 </select>
                 <textarea id="descripcion" placeholder="Descripción del problema" required></textarea>
-                <button type="submit">Enviar Ticket</button>
-            </form>
-        </section>
-
-        <select id="impacto" required>
+                
+                <select id="impacto" required>
                     <option value="" disabled selected>Nivel de Impacto</option>
-                    <option value="1">Bajo</option>
-                    <option value="2">Medio</option>
-                    <option value="3">Alto</option>
+                    <option value="1">1 - Bajo</option>
+                    <option value="2">2 - Medio</option>
+                    <option value="3">3 - Alto</option>
                 </select>
                 <select id="urgencia" required>
                     <option value="" disabled selected>Nivel de Urgencia</option>
-                    <option value="1">Baja</option>
-                    <option value="2">Media</option>
-                    <option value="3">Alta</option>
+                    <option value="1">1 - Baja</option>
+                    <option value="2">2 - Media</option>
+                    <option value="3">3 - Alta</option>
                 </select>
+                
                 <input type="number" id="tiempoEstimado" placeholder="Tiempo estimado (horas)" required>
                 <button type="submit">Enviar Ticket</button>
             </form>
         </section>
 
-        <section id="list-section">
+        <section id="list-section" style="display:none;">
             <h2>Listado de Tickets</h2>
             <div id="ticketsContainer"></div>
         </section>
     </main>
+
     <script src="script.js"></script> 
 </body>
 </html>
