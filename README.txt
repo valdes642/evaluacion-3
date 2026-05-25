@@ -6,6 +6,7 @@ Se nos has pedido el desarrollo de una aplicacion web para administracion de tic
 -html
 -javascript
 -github
+-node
 3.-Instalacion:
 
 4.-Endpoints:
