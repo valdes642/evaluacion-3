@@ -3,67 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HelpDesk Smart Priority - GhostDev</title>
+    <title>HelpDesk - GhostDev</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <div class="logo-container">
-            <img src="imagen/GhostDev - Logo.png" alt="GhostDev Logo" class="logo">
-            <h1>HelpDesk Smart Priority</h1>
-        </div>
-        <button id="btnLogout" style="display:none;" onclick="logout()">Cerrar Sesión</button>
+        <h1>HelpDesk System</h1>
     </header>
 
-    <main>
-        <section id="login-section">
-            <h2>Iniciar Sesión</h2>
-            <form id="loginForm">
-                <input type="text" id="username" placeholder="Usuario (admin)" required>
-                <input type="password" id="password" placeholder="Contraseña (1234)" required>
-                <button type="submit">Ingresar</button>
-            </form>
-        </section>
+    <div id="login-view">
+        <h2>Iniciar Sesión</h2>
+        <form id="loginForm">
+            <input type="text" id="username" placeholder="Usuario" required>
+            <input type="password" id="password" placeholder="Contraseña" required>
+            <button type="submit" class="btn">Entrar</button>
+        </form>
+        <p id="login-error" style="color: red; display: none;"></p>
+    </div>
 
-        <section id="form-section" style="display:none;">
+    <div id="app-view" style="display: none;">
+        
+        <div id="vista-registrar-ticket">
             <h2>Registrar Nuevo Ticket</h2>
             <form id="ticketForm">
-                <input type="text" id="nombreSolicitante" placeholder="Nombre Solicitante" required>
-                <input type="email" id="correo" placeholder="Correo electrónico" required>
-                <select id="categoria" required>
-                    <option value="" disabled selected>Categoría</option>
-                    <option value="hardware">Hardware</option>
-                    <option value="software">Software</option>
-                    <option value="red">Red</option>
-                    <option value="cuenta">Cuenta</option>
-                    <option value="otro">Otro</option>
-                </select>
+                <input type="text" id="titulo" placeholder="Título del Ticket" required>
                 <textarea id="descripcion" placeholder="Descripción del problema" required></textarea>
-                
-                <select id="impacto" required>
-                    <option value="" disabled selected>Nivel de Impacto</option>
-                    <option value="1">1 - Bajo</option>
-                    <option value="2">2 - Medio</option>
-                    <option value="3">3 - Alto</option>
+                <select id="prioridad">
+                    <option value="alta">Alta</option>
+                    <option value="media">Media</option>
+                    <option value="baja">Baja</option>
                 </select>
-                <select id="urgencia" required>
-                    <option value="" disabled selected>Nivel de Urgencia</option>
-                    <option value="1">1 - Baja</option>
-                    <option value="2">2 - Media</option>
-                    <option value="3">3 - Alta</option>
-                </select>
-                
-                <input type="number" id="tiempoEstimado" placeholder="Tiempo estimado (horas)" required>
-                <button type="submit">Enviar Ticket</button>
+                <button type="submit" class="btn">Crear Ticket</button>
             </form>
-        </section>
+            <br>
+            <button id="btn-ver-tickets" type="button" class="btn btn-secondary">Ver Tickets Creados</button>
+        </div>
 
-        <section id="list-section" style="display:none;">
-            <h2>Listado de Tickets</h2>
-            <div id="ticketsContainer"></div>
-        </section>
-    </main>
+        <div id="vista-lista-tickets" style="display: none;">
+            <h2>Lista de Tickets</h2>
+            <div id="tickets-container">
+                </div>
+            <br>
+            <button id="btn-volver-crear" type="button" class="btn btn-secondary">Volver a Registrar Ticket</button>
+        </div>
 
-    <script src="script.js"></script> 
+        <br>
+        <button id="btnLogout" class="btn btn-danger">Cerrar Sesión</button>
+    </div>
+
+    <script src="script.js"></script>
 </body>
 </html>
