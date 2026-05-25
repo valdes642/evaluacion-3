@@ -1,66 +1,41 @@
-    const ticketService = require('../services/ticketService');
+const db = require('../data/db');
+const { calcularPrioridad } = require('../services/priorityService');
 
-    const getAllTickets = async (req, res) => {
-        try {
-            const tickets = await ticketService.getAllTickets();
-            res.json(tickets);
-        } catch (error) {
-            res.status(500).json({ message: 'Error interno de la base de datos', error: error.message });
+const crearTicket = async (req, res) => {
+    try {
+        const { nombreSolicitante, correo, categoria, descripcion, impacto, urgencia, tiempoEstimado } = req.body;
+        if (!nombreSolicitante || !correo || !categoria || !descripcion || !impacto || !urgencia || !tiempoEstimado) {
+            return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
-    };
+        const prioridad = calcularPrioridad(impacto, urgencia, categoria, tiempoEstimado);
+        const [result] = await db.query(
+            'INSERT INTO tickets (nombreSolicitante, correo, categoria, descripcion, impacto, urgencia, tiempoEstimado, prioridad) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+            [nombreSolicitante, correo, categoria, descripcion, impacto, urgencia, tiempoEstimado, prioridad]
+        );
+        res.status(201).json({ mensaje: 'Ticket creado', id: result.insertId, prioridad });
+    } catch (error) { res.status(500).json({ error: 'Error interno' }); }
+};
 
-    const getTicketById = async (req, res) => {
-        try {
-            const ticket = await ticketService.getTicketById(req.params.id);
-            if (ticket) {
-                res.json(ticket);
-            } else {
-                res.status(404).json({ message: 'Ticket no encontrado' });
-            }
-        } catch (error) {
-            res.status(500).json({ message: 'Error al consultar el ticket', error: error.message });
-        }
-    };
+const listarTickets = async (req, res) => {
+    try {
+        const [rows] = await db.query('SELECT * FROM tickets ORDER BY id DESC');
+        res.status(200).json(rows);
+    } catch (error) { res.status(500).json({ error: 'Error al obtener' }); }
+};
 
-    const createTicket = async (req, res) => {
-        try {
-            const newTicket = await ticketService.createTicket(req.body);
-            res.status(201).json(newTicket);
-        } catch (error) {
-            res.status(500).json({ message: 'Error al insertar el ticket en BD', error: error.message });
-        }
-    };
+const eliminarTicket = async (req, res) => {
+    try {
+        await db.query('DELETE FROM tickets WHERE id = ?', [req.params.id]);
+        res.status(200).json({ mensaje: 'Ticket eliminado' });
+    } catch (error) { res.status(500).json({ error: 'Error al eliminar' }); }
+};
 
-    const updateTicket = async (req, res) => {
-        try {
-            const updatedTicket = await ticketService.updateTicket(req.params.id, req.body);
-            if (updatedTicket) {
-                res.json(updatedTicket);
-            } else {
-                res.status(404).json({ message: 'Ticket no encontrado para actualizar' });
-            }
-        } catch (error) {
-            res.status(500).json({ message: 'Error al actualizar', error: error.message });
-        }
-    };
+const actualizarTicket = async (req, res) => {
+    try {
+        const { estado } = req.body;
+        await db.query('UPDATE tickets SET estado = ? WHERE id = ?', [estado, req.params.id]);
+        res.status(200).json({ mensaje: 'Ticket actualizado' });
+    } catch (error) { res.status(500).json({ error: 'Error al actualizar' }); }
+};
 
-    const deleteTicket = async (req, res) => {
-        try {
-            const success = await ticketService.deleteTicket(req.params.id);
-            if (success) {
-                res.status(204).send(); // 204 significa Eliminado con éxito
-            } else {
-                res.status(404).json({ message: 'Ticket no encontrado' });
-            }
-        } catch (error) {
-            res.status(500).json({ message: 'Error al eliminar el ticket', error: error.message });
-        }
-    };
-
-    module.exports = {
-        getAllTickets,
-        getTicketById,
-        createTicket,
-        updateTicket,
-        deleteTicket
-    };
+module.exports = { crearTicket, listarTickets, eliminarTicket, actualizarTicket };

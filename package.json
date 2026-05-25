@@ -1,52 +1,18 @@
 {
-  "proyecto": "HelpDesk Smart Priority",
-  "instrucciones_terminal": [
-    {
-      "paso": 1,
-      "accion": "Inicializar el proyecto",
-      "descripcion": "Crea el archivo package.json con la configuración inicial por defecto de Node.js.",
-      "comando": "npm init -y"
-    },
-    {
-      "paso": 2,
-      "accion": "Instalar dependencias",
-      "descripcion": "Instala Express (framework para el servidor), CORS (para permitir la comunicación entre el frontend y backend) y UUID (para generar identificadores únicos para los tickets).",
-      "comando": "npm install express cors uuid"
-    },
-    {
-      "paso": 3,
-      "accion": "Ejecutar el servidor",
-      "descripcion": "Inicia la aplicación. Una vez ejecutado, el servidor estará escuchando en el puerto 3000 y podrás abrir http://localhost:3000 en tu navegador.",
-      "comando": "node app.js"
-    }
-  ],
-  "notas_adicionales": {
-    "reinicio_automatico": "Si deseas que el servidor se reinicie automáticamente al hacer cambios, puedes instalar nodemon globalmente o como dependencia de desarrollo usando 'npm install -D nodemon' y luego ejecutar 'nodemon app.js'."
-  },
-  "name": "evaluacion-3",
+  "name": "helpdesk-smart-priority",
   "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
+  "description": "Sistema web para gestionar solicitudes de soporte técnico - GhostDev",
+  "main": "src/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/app.js",
+    "dev": "node --watch src/app.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/valdes642/evaluacion-3.git"
-  },
-  "keywords": [],
-  "author": "",
+  "author": "Tomás (Zommy) - GhostDev",
   "license": "ISC",
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/valdes642/evaluacion-3/issues"
-  },
-  "homepage": "https://github.com/valdes642/evaluacion-3#readme",
   "dependencies": {
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
-    "mysql2": "^3.22.3",
-    "sqlite3": "^6.0.1",
-    "uuid": "^14.0.0"
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.9.2"
   }
 }

@@ -1,13 +1,16 @@
-const authMiddleware = (req, res, next) => {
-    const authHeader = req.headers.authorization;
-    console.log('Authorization header recibido:', authHeader);
-    if (authHeader && authHeader === 'Bearer token-seguro-12345') {
-        console.log('Autenticación exitosa');
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = 'super_secret_key_123';
+
+const verificarToken = (req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    if (!authHeader) return res.status(401).json({ error: 'Acceso no autorizado. Token requerido.' }); // [cite: 121, 130, 131]
+
+    const token = authHeader.split(' ')[1];
+    jwt.verify(token, SECRET_KEY, (err, user) => {
+        if (err) return res.status(401).json({ error: 'Token inválido.' }); // [cite: 121, 130, 131]
+        req.user = user;
         next();
-    } else {
-        console.log('Autenticación fallida');  
-        res.status(401).json({ error: 'Acceso no autorizado' });
-    }
+    });
 };
 
-module.exports = authMiddleware;
+module.exports = { verificarToken, SECRET_KEY };

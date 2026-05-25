@@ -1,162 +1,140 @@
-const API_URL = 'http://localhost:3000';
+let jwtToken = localStorage.getItem('token') || '';
 
-// Elementos del DOM
-const loginView = document.getElementById('login-view');
-const appView = document.getElementById('app-view');
-const vistaRegistrarTicket = document.getElementById('vista-registrar-ticket');
-const vistaListaTickets = document.getElementById('vista-lista-tickets');
-const loginForm = document.getElementById('loginForm');
-const ticketForm = document.getElementById('ticketForm');
+// Mantener sesión activa si ya hay token
+if(jwtToken) {
+    document.getElementById('loginPanel').classList.add('hidden');
+    document.getElementById('ticketPanel').classList.remove('hidden');
+    document.getElementById('btnLogout').classList.remove('hidden');
+}
 
-// Botones de navegación
-const btnVerTickets = document.getElementById('btn-ver-tickets');
-const btnVolverCrear = document.getElementById('btn-volver-crear');
-const btnLogout = document.getElementById('btnLogout');
+async function login() {
+    const user = document.getElementById('username').value;
+    const pass = document.getElementById('password').value;
 
-// 1. Verificar sesión
-document.addEventListener('DOMContentLoaded', () => {
-    if (localStorage.getItem('token')) {
-        mostrarApp();
+    const res = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: user, password: pass })
+    });
+
+    if (res.ok) {
+        const data = await res.json();
+        jwtToken = data.token;
+        localStorage.setItem('token', jwtToken);
+        document.getElementById('loginPanel').classList.add('hidden');
+        document.getElementById('ticketPanel').classList.remove('hidden');
+        document.getElementById('btnLogout').classList.remove('hidden');
+    } else {
+        alert('Credenciales incorrectas');
     }
-});
-
-// 2. Lógica del Login
-loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-
-    try {
-        const response = await fetch(`${API_URL}/auth/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-            localStorage.setItem('token', data.token);
-            mostrarApp();
-        } else {
-            document.getElementById('login-error').textContent = data.error;
-            document.getElementById('login-error').style.display = 'block';
-        }
-    } catch (error) {
-        console.error('Error de login:', error);
-    }
-});
-
-// 3. Lógica Formulario Ticket (Alineado con MySQL)
-if (ticketForm) {
-    ticketForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        // Estos IDs deben coincidir con tus <input> en el HTML
-        const ticketData = {
-            nombreSolicitante: document.getElementById('nombreSolicitante').value,
-            correo: document.getElementById('correo').value,
-            categoria: document.getElementById('categoria').value,
-            descripcion: document.getElementById('descripcion').value,
-            impacto: document.getElementById('impacto').value,
-            urgencia: document.getElementById('urgencia').value,
-            tiempoEstimado: document.getElementById('tiempoEstimado').value,
-            prioridad: document.getElementById('prioridad').value,
-            estado: 'pendiente'
-        };
-
-        // ... luego en el fetch:
-        body: JSON.stringify(ticketData)
-
-        try {
-            const response = await fetch(`${API_URL}/tickets`, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                },
-                body: JSON.stringify(ticketData)
-            });
-
-            if (response.ok) {
-                alert('Ticket creado exitosamente');
-                ticketForm.reset();
-                vistaRegistrarTicket.style.display = 'none';
-                vistaListaTickets.style.display = 'block';
-                cargarTickets();
-            } else {
-                const error = await response.json();
-                alert('Error al crear ticket: ' + (error.message || error.error));
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Error de conexión al crear el ticket');
-        }
-    });
 }
 
-// 4. Navegación
-if (btnVerTickets) {
-    btnVerTickets.addEventListener('click', () => {
-        vistaRegistrarTicket.style.display = 'none';
-        vistaListaTickets.style.display = 'block';
-        cargarTickets();
-    });
-}
-
-if (btnVolverCrear) {
-    btnVolverCrear.addEventListener('click', () => {
-        vistaListaTickets.style.display = 'none';
-        vistaRegistrarTicket.style.display = 'block';
-    });
-}
-
-// 5. Cerrar sesión
-btnLogout.addEventListener('click', () => {
+function logout() {
+    jwtToken = '';
     localStorage.removeItem('token');
-    loginView.style.display = 'block';
-    appView.style.display = 'none';
-});
-
-function mostrarApp() {
-    loginView.style.display = 'none';
-    appView.style.display = 'block';
-    vistaRegistrarTicket.style.display = 'block';
-    vistaListaTickets.style.display = 'none';
+    document.getElementById('ticketPanel').classList.add('hidden');
+    document.getElementById('btnLogout').classList.add('hidden');
+    document.getElementById('loginPanel').classList.remove('hidden');
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
 }
 
-// 6. Cargar Tickets
+async function crearTicket() {
+    const ticket = {
+        nombreSolicitante: document.getElementById('nombre').value,
+        correo: document.getElementById('correo').value,
+        categoria: document.getElementById('categoria').value,
+        descripcion: document.getElementById('descripcion').value,
+        impacto: document.getElementById('impacto').value,
+        urgencia: document.getElementById('urgencia').value,
+        tiempoEstimado: parseInt(document.getElementById('tiempo').value) || 0
+    };
+
+    const res = await fetch('/api/tickets', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + jwtToken
+        },
+        body: JSON.stringify(ticket)
+    });
+
+    if (res.ok) {
+        alert(`¡Ticket guardado exitosamente!`);
+        document.getElementById('nombre').value = '';
+        document.getElementById('descripcion').value = '';
+    } else {
+        alert('Error al crear ticket. Complete todos los campos.');
+    }
+}
+
+function abrirVentanaTickets() {
+    document.getElementById('ventanaTickets').classList.remove('hidden');
+    cargarTickets();
+}
+
+function cerrarVentanaTickets() {
+    document.getElementById('ventanaTickets').classList.add('hidden');
+}
+
 async function cargarTickets() {
-    try {
-        const response = await fetch(`${API_URL}/tickets`, {
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
-        });
+    const res = await fetch('/api/tickets', {
+        headers: { 'Authorization': 'Bearer ' + jwtToken }
+    });
+
+    if (res.ok) {
+        const tickets = await res.json();
+        let html = `
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Solicitante</th>
+                    <th>Categoría</th>
+                    <th>Prioridad</th>
+                    <th>Estado</th>
+                    <th>Acciones</th>
+                </tr>`;
         
-        const tickets = await response.json();
-        const contenedor = document.getElementById('tickets-container');
-        contenedor.innerHTML = '';
-
-        if (!tickets || tickets.length === 0) {
-            contenedor.innerHTML = '<p>No hay tickets creados actualmente.</p>';
-            return;
-        }
-
-        tickets.forEach(ticket => {
-            const div = document.createElement('div');
-            div.className = "ticket-card"; // Puedes dar estilo a esta clase en tu CSS
-            div.style.border = "1px solid #ccc";
-            div.style.margin = "10px 0";
-            div.style.padding = "10px";
-            
-            div.innerHTML = `
-                <h3>Ticket #${ticket.id}</h3>
-                <p><strong>Solicitante:</strong> ${ticket.nombreSolicitante}</p>
-                <p><strong>Categoría:</strong> ${ticket.categoria}</p>
-                <p><strong>Descripción:</strong> ${ticket.descripcion}</p>
-                <p><strong>Estado:</strong> ${ticket.estado}</p>
-            `;
-            contenedor.appendChild(div);
+        tickets.forEach(t => {
+            html += `
+                <tr>
+                    <td>${t.id}</td>
+                    <td>${t.nombreSolicitante}</td>
+                    <td>${t.categoria}</td>
+                    <td style="color: #00f2fe; font-weight: bold;">${t.prioridad}</td>
+                    <td>${t.estado}</td>
+                    <td class="action-btns">
+                        <button class="btn-modificar" onclick="modificarTicket(${t.id})">✎ Modificar</button>
+                        <button class="btn-eliminar" onclick="eliminarTicket(${t.id})">✖ Eliminar</button>
+                    </td>
+                </tr>`;
         });
-    } catch (error) {
-        console.error('Error:', error);
+        html += '</table>';
+        document.getElementById('listaTickets').innerHTML = html;
+    }
+}
+
+async function eliminarTicket(id) {
+    if(confirm('¿Estás seguro de eliminar este ticket?')) {
+        const res = await fetch(`/api/tickets/${id}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': 'Bearer ' + jwtToken }
+        });
+        if(res.ok) cargarTickets();
+    }
+}
+
+async function modificarTicket(id) {
+    const nuevoEstado = prompt("Ingrese nuevo estado (pendiente, en proceso, resuelto):");
+    if(nuevoEstado) {
+        const res = await fetch(`/api/tickets/${id}`, {
+            method: 'PUT',
+            headers: { 
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + jwtToken 
+            },
+            body: JSON.stringify({ estado: nuevoEstado })
+        });
+        if(res.ok) cargarTickets();
     }
 }
