@@ -1,0 +1,26 @@
+{
+  "proyecto": "HelpDesk Smart Priority",
+  "instrucciones_terminal": [
+    {
+      "paso": 1,
+      "accion": "Inicializar el proyecto",
+      "descripcion": "Crea el archivo package.json con la configuración inicial por defecto de Node.js.",
+      "comando": "npm init -y"
+    },
+    {
+      "paso": 2,
+      "accion": "Instalar dependencias",
+      "descripcion": "Instala Express (framework para el servidor), CORS (para permitir la comunicación entre el frontend y backend) y UUID (para generar identificadores únicos para los tickets).",
+      "comando": "npm install express cors uuid"
+    },
+    {
+      "paso": 3,
+      "accion": "Ejecutar el servidor",
+      "descripcion": "Inicia la aplicación. Una vez ejecutado, el servidor estará escuchando en el puerto 3000 y podrás abrir http://localhost:3000 en tu navegador.",
+      "comando": "node app.js"
+    }
+  ],
+  "notas_adicionales": {
+    "reinicio_automatico": "Si deseas que el servidor se reinicie automáticamente al hacer cambios, puedes instalar nodemon globalmente o como dependencia de desarrollo usando 'npm install -D nodemon' y luego ejecutar 'nodemon app.js'."
+  }
+}
