@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.static('src/public')); 
 
 // Rutas
-app.use('/login', authRoutes);
+app.use('/auth', authRoutes);
 app.use('/tickets', ticketRoutes);
 
 const PORT = process.env.PORT || 3000;

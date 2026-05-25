@@ -4,7 +4,7 @@ const router = express.Router();
 
 // 1. Lista de administradores permitidos (Diferentes usuarios y contraseñas)
 const administradores = [
-    { username: 'victor', password: 'F1', nombre: 'Victor' },
+    { username: 'Victor', password: 'F12026', nombre: 'Victor Peres' },
     { username: 'Zommy', password: '1107', nombre: 'Zommy' },
     { username: 'admin', password: '1234', nombre: 'Administrador Principal' }
 ];
