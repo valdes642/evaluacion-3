@@ -1,4 +1,4 @@
-## 🛠️ Instalación
+## Instalación
 
 1. Asegúrate de tener instalado [Node.js](https://nodejs.org/) y MySQL en tu equipo.
 2. Clona o descarga este repositorio.
@@ -11,7 +11,7 @@ npm install
 
 > **Nota:** Esto leerá el archivo `package.json` y descargará automáticamente Express, MySQL2, CORS y JSONWebToken creando la carpeta `node_modules`.
 
-## 🚀 Ejecución del Servidor
+##Ejecución del Servidor
 
 Una vez finalizada la instalación y con tu servidor MySQL encendido (XAMPP o Workbench), levanta el servidor ejecutando:
 
