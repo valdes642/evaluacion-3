@@ -1,4 +1,16 @@
-## Instalación
+1.-Descripcion:
+
+Este proyecto corresponde a un sistema web de gestion para niembros de un entorno academico
+Se nos has pedido el desarrollo de una aplicacion web para administracion de tickects del soporte tecnico
+2.-Tecnologias ocupadas:
+
+-Visual studio code 
+-html
+-javascript
+-github
+
+3.-Instalación
+
 
 1. Asegúrate de tener instalado [Node.js](https://nodejs.org/) y MySQL en tu equipo.
 2. Clona o descarga este repositorio.
